@@ -52,7 +52,7 @@ public class ElytraRender<T extends LivingEntity, M extends EntityModel<T>> exte
             matrixStack.translate(0.0D, 0.0D, 0.125D);
             this.getContextModel().copyStateTo(this.elytra);
             this.elytra.setAngles(livingEntity, f, g, j, k, l);
-            VertexConsumer vertexConsumer = ItemRenderer.method_29711(vertexConsumerProvider, this.elytra.getLayer(identifier4), false, itemStack.hasGlint());
+            VertexConsumer vertexConsumer = ItemRenderer.getItemGlintConsumer(vertexConsumerProvider, this.elytra.getLayer(identifier4), false, itemStack.hasGlint());
             this.elytra.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStack.pop();
         }
