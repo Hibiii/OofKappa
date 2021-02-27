@@ -3,21 +3,24 @@
   "id": "fabric-ofcapes",
   "version": "${version}",
 
-  "name": "Fabric OF Capes",
-  "description": "Adds Optifine capes & Optifine zoom.",
+  "name": "Kappa",
+  "description": "Adds OptiFine capes...",
   "authors": [
-    "Dragonostic"
+    "Hibi",
+    "Dragonostic (originally)"
   ],
   "contact": {
-    "discord": "drago#1969"
+    "discord": "Hibiii#5726",
+    "sources": "https://github.com/Hibiii/Kappa",
+    "issues": "https://github.com/Hibiii/Kappa/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": "LGPL-2.1",
   "icon": "assets/ofcapes/icon.png",
 
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "client": [
       "net.drago.ofcapes.ofcapes"
     ]
   },
@@ -30,7 +33,7 @@
     "fabric": "*",
     "minecraft": "1.16.x"
   },
-  "suggests": {
-    "flamingo": "*"
+  "custom": {
+    "modmenu:clientsideOnly": true
   }
 }
