@@ -16,17 +16,19 @@ import net.minecraft.client.render.entity.model.PlayerEntityModel;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin
-		extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
+        extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
-	public PlayerEntityRendererMixin(EntityRenderDispatcher dispatcher,
-			PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
-		super(dispatcher, model, shadowRadius);
-	}
+    public PlayerEntityRendererMixin(EntityRenderDispatcher dispatcher,
+            PlayerEntityModel<AbstractClientPlayerEntity> model, float shadowRadius) {
+        super(dispatcher, model, shadowRadius);
+    }
 
-	@Inject(method = {"<init>(Lnet/minecraft/client/render/entity/EntityRenderDispatcher;Z)V"}, at = @At("RETURN"))
+    // VANILLA DOES THIS >:(
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Inject(method = {"<init>(Lnet/minecraft/client/render/entity/EntityRenderDispatcher;Z)V"}, at = @At("RETURN"))
     private void ConstructorMixinPlayerEntityRenderer(EntityRenderDispatcher dispatcher, boolean bl, CallbackInfo info) {
-		this.addFeature(new CapeRender(this));
-		this.addFeature(new ElytraRender(this));
-		this.features.removeIf(renderer -> renderer instanceof ElytraFeatureRenderer);
+        this.addFeature(new CapeRender(this));
+        this.addFeature(new ElytraRender(this));
+        this.features.removeIf(renderer -> renderer instanceof ElytraFeatureRenderer);
     }
 }

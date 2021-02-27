@@ -7,6 +7,7 @@ import com.mojang.authlib.exceptions.AuthenticationException;
 
 import org.spongepowered.asm.mixin.Mixin;
 
+import net.drago.ofcapes.ofcapes;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.options.GameOptionsScreen;
@@ -27,6 +28,8 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
         super(parent, gameOptions, new TranslatableText("options.skinCustomisation.title"));
     }
 
+    private TranslatableText ownNameLabelOn = new TranslatableText("options.ofcapes.own_name_on");
+    private TranslatableText ownNameLabelOff = new TranslatableText("options.ofcapes.own_name_off");
 
     //@Inject(method = "init()V", at = @At("TAIL"))
     @Override
@@ -52,6 +55,23 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
         }));
         ++i;
 
+        this.addButton(new ButtonWidget(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, ofcapes.showPlayersOwnName? ownNameLabelOn : ownNameLabelOff, (buttonWidget) -> {
+            if(ofcapes.showPlayersOwnName) {
+                ofcapes.showPlayersOwnName = false;
+                ofcapes.saveConfig();
+                buttonWidget.setMessage(ownNameLabelOff);
+            } else {
+                ofcapes.showPlayersOwnName = true;
+                ofcapes.saveConfig();
+                buttonWidget.setMessage(ownNameLabelOn);                
+            }
+        }));
+        ++i;
+        
+        if (i % 2 == 1) {
+            ++i;
+        }
+        
         this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, new TranslatableText("options.ofcapes.editor"), (button) -> {
             final Random r1 = new Random();
             final Random r2 = new Random(System.identityHashCode(new Object()));

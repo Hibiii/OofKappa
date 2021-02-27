@@ -1,4 +1,6 @@
 {
     "key.ofcapes.zoom": "Toggle Zoom",
-    "options.ofcapes.editor": "Open Cape Editor..."
+    "options.ofcapes.editor": "Open Cape Editor...",
+    "options.ofcapes.own_name_on": "Your username: ON",
+    "options.ofcapes.own_name_off": "Your username: OFF"
 }
