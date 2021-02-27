@@ -10,14 +10,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import net.drago.ofcapes.ofcapes;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
-import net.minecraft.client.gui.screen.options.GameOptionsScreen;
-import net.minecraft.client.gui.screen.options.SkinOptionsScreen;
+import net.minecraft.client.gui.screen.option.GameOptionsScreen;
+import net.minecraft.client.gui.screen.option.SkinOptionsScreen;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.OptionButtonWidget;
-import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
+import net.minecraft.client.gui.widget.CyclingButtonWidget;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.Option;
 import net.minecraft.client.render.entity.PlayerModelPart;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 
@@ -34,28 +34,16 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
     //@Inject(method = "init()V", at = @At("TAIL"))
     @Override
     public void init() {
-        int i = 0;
-        PlayerModelPart[] var2 = PlayerModelPart.values();
-        int var3 = var2.length;
-
-        for(int var4 = 0; var4 < var3; ++var4) {
-            PlayerModelPart playerModelPart = var2[var4];
-            this.addButton(new ButtonWidget(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, this.getPlayerModelPartDisplayString(playerModelPart), (buttonWidget) -> {
-                this.gameOptions.togglePlayerModelPart(playerModelPart);
-                buttonWidget.setMessage(this.getPlayerModelPartDisplayString(playerModelPart));
-            }));
-            ++i;
+        int integer2 = 0;
+        for (final PlayerModelPart lv : PlayerModelPart.values()) {
+            this.<CyclingButtonWidget<Boolean>>addButton(CyclingButtonWidget.method_32613(this.gameOptions.isPlayerModelPartEnabled(lv)).build(this.width / 2 - 155 + integer2 % 2 * 160, this.height / 6 + 24 * (integer2 >> 1), 150, 20, lv.getOptionName(), (cyclingButtonWidget, boolean4) -> this.gameOptions.togglePlayerModelPart(lv, boolean4)));
+            ++integer2;
         }
-
-        this.addButton(new OptionButtonWidget(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, Option.MAIN_HAND, Option.MAIN_HAND.getMessage(this.gameOptions), (buttonWidget) -> {
-            Option.MAIN_HAND.cycle(this.gameOptions, 1);
-            this.gameOptions.write();
-            buttonWidget.setMessage(Option.MAIN_HAND.getMessage(this.gameOptions));
-            this.gameOptions.onPlayerModelPartChange();
-        }));
-        ++i;
-
-        this.addButton(new ButtonWidget(this.width / 2 - 155 + i % 2 * 160, this.height / 6 + 24 * (i >> 1), 150, 20, ofcapes.showPlayersOwnName? ownNameLabelOn : ownNameLabelOff, (buttonWidget) -> {
+        this.<AbstractButtonWidget>addButton(Option.MAIN_HAND.createButton(this.gameOptions, this.width / 2 - 155 + integer2 % 2 * 160, this.height / 6 + 24 * (integer2 >> 1), 150));
+        if (++integer2 % 2 == 1) {
+            ++integer2;
+        }
+        this.<AbstractButtonWidget>addButton(new ButtonWidget(this.width / 2 - 155 + integer2 % 2 * 160, this.height / 6 + 24 * (integer2 >> 1), 150, 20, ofcapes.showPlayersOwnName? ownNameLabelOn : ownNameLabelOff, (buttonWidget) -> {
             if(ofcapes.showPlayersOwnName) {
                 ofcapes.showPlayersOwnName = false;
                 ofcapes.saveConfig();
@@ -66,13 +54,13 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
                 buttonWidget.setMessage(ownNameLabelOn);                
             }
         }));
-        ++i;
+        ++integer2;
         
-        if (i % 2 == 1) {
-            ++i;
+        if (integer2 % 2 == 1) {
+            ++integer2;
         }
         
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, new TranslatableText("options.ofcapes.editor"), (button) -> {
+        this.<AbstractButtonWidget>addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (integer2 >> 1), 200, 20, new TranslatableText("options.ofcapes.editor"), (button) -> {
             final Random r1 = new Random();
             final Random r2 = new Random(System.identityHashCode(new Object()));
             final BigInteger random1Bi = new BigInteger(128, r1);
@@ -89,19 +77,15 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
 
             Util.getOperatingSystem().open(String.format(uRL));
         }));
-        ++i;
+        ++integer2;
 
-        if (i % 2 == 1) {
-            ++i;
+        if (integer2 % 2 == 1) {
+            ++integer2;
         }
 
-        this.addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), 200, 20, ScreenTexts.DONE, (buttonWidget) -> {
+        this.<AbstractButtonWidget>addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (integer2 >> 1), 200, 20, ScreenTexts.DONE, (buttonWidget) -> {
             this.client.openScreen(this.parent);
         }));
-    }
-
-    private Text getPlayerModelPartDisplayString(PlayerModelPart part) {
-        return part.getOptionName().shallowCopy().append(": ").append(ScreenTexts.getToggleText(this.gameOptions.getEnabledPlayerModelParts().contains(part)));
     }
     
 }
