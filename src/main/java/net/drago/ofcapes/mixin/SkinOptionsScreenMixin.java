@@ -28,8 +28,8 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
         super(parent, gameOptions, new TranslatableText("options.skinCustomisation.title"));
     }
 
-    private TranslatableText ownNameLabelOn = new TranslatableText("options.ofcapes.own_name_on");
-    private TranslatableText ownNameLabelOff = new TranslatableText("options.ofcapes.own_name_off");
+    private TranslatableText ownNameLabelOn = new TranslatableText("Your username: ON");
+    private TranslatableText ownNameLabelOff = new TranslatableText("Your username: OFF");
 
     //@Inject(method = "init()V", at = @At("TAIL"))
     @Override
@@ -60,7 +60,7 @@ public abstract class SkinOptionsScreenMixin extends GameOptionsScreen {
             ++integer2;
         }
         
-        this.<AbstractButtonWidget>addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (integer2 >> 1), 200, 20, new TranslatableText("options.ofcapes.editor"), (button) -> {
+        this.<AbstractButtonWidget>addButton(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 24 * (integer2 >> 1), 200, 20, new TranslatableText("Open Cape Editor..."), (button) -> {
             final Random r1 = new Random();
             final Random r2 = new Random(System.identityHashCode(new Object()));
             final BigInteger random1Bi = new BigInteger(128, r1);
